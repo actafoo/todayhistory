@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html data-theme="retro" lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&family=Noto+Serif+KR:wght@200;300;400;500;600;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@2.38.0/dist/full.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>TodayHistory</title>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <div class="navbar bg-neutral text-neutral-content">
+      <div class="flex-1">
+        <a
+          class="btn btn-ghost normal-case text-xl"
+          style="font-family: Noto Serif KR"
+          >오늘의 역사</a
+        >
+      </div>
+      <div class="flex-none">
+        <ul class="menu menu-horizontal p-0">
+          <li><a id="anotherdate">다른 날짜</a></li>
+          <li tabindex="0">
+            <a>
+              학습하기
+              <svg
+                class="fill-current"
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"
+                />
+              </svg>
+            </a>
+            <ul class="p-2 bg-base-100">
+              <li><a>글쓰기</a></li>
+              <li><a>추가 링크</a></li>
+            </ul>
+          </li>
+          <li><a>회원가입</a></li>
+          <li><a>로그인</a></li>
+        </ul>
+      </div>
+    </div>
+    <!-- Main 화면 -->
+    <div
+      class="hero min-h-screen"
+      style="
+        background-image: url(https://cdn.pixabay.com/photo/2019/01/09/18/36/suwon-hwaseong-3923984_1280.jpg);
+      "
+    >
+      <div class="hero-overlay bg-opacity-60"></div>
+      <div class="hero-content text-center text-neutral-content">
+        <div class="max-w-md">
+          <h1
+            class="mb-5 text-5xl font-bold"
+            style="font-family: Noto Serif KR"
+          >
+            오늘의 역사
+          </h1>
+          <p class="mb-1" id="date"></p>
+          <p class="mb-5">오늘은 어떤 일이 있었을까요?</p>
+          <label for="my-modal-6" class="btn btn-primary" id="open">클릭</label>
+        </div>
+      </div>
+    </div>
+    <!-- Click 후 오늘의 역사 화면 -->
+    <input type="checkbox" id="my-modal-6" class="modal-toggle" />
+    <div class="modal modal-bottom sm:modal-middle" id="modal">
+      <div class="card lg:card-side bg-base-100 shadow-xl">
+        <figure>
+          <img src="https://placeimg.com/400/400/arch" alt="Album" />
+        </figure>
+        <div class="card-body">
+          <h1 class="card-title" id="todaytitle">오늘의 사건 :</h1>
+          <h3 class="card-title" id="todaydate">0000-00-00</h3>
+          <p id="todaydescription">{{ todayhistory.description }}</p>
+          <div class="card-actions justify-end">
+            <div class="form-control">
+              <label class="label cursor-pointer">
+                <span class="label-text">또 안보기</span>
+                <input type="checkbox" checked="checked" class="checkbox" />
+              </label>
+            </div>
+            <button class="btn btn-primary" id="another">다른 사건</button>
+            <button class="btn" id="close">닫기</button>
+          </div>
+          <div class="btn-group flex justify-center">
+            <button class="btn" id="previousdate">«</button>
+            <button class="btn" id="date1">Page 22</button>
+            <button class="btn" id="nextdate">»</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Jquery CDN -->
+    <script
+      src="https://code.jquery.com/jquery-3.6.1.slim.js"
+      integrity="sha256-tXm+sa1uzsbFnbXt8GJqsgi2Tw+m4BLGDof6eUPjbtk="
+      crossorigin="anonymous"
+    ></script>
+    <!-- js -->
+    <script>
+      document.getElementById('close').addEventListener('click', function () {
+        document.getElementById('modal').style.display = 'none';
+        document.getElementById('todaydate').innerHTML = dateString;
+      });
+      document.getElementById('open').addEventListener('click', () => {
+        document.getElementById('modal').style.display = 'block';
+      });
+      document.getElementById('anotherdate').addEventListener('click', () => {
+        alert('아직 구현되지 않은 기능입니다.');
+      });
+
+      let today = new Date();
+
+      let year = today.getFullYear();
+      let month = ('0' + (today.getMonth() + 1)).slice(-2);
+      let day = ('0' + today.getDate()).slice(-2);
+
+      let dateString = year + '-' + month + '-' + day;
+      document.getElementById('date').innerHTML = dateString;
+      document.getElementById('date').style.fontWeight = 'bold';
+      document.getElementById('date1').innerHTML = dateString;
+
+      const storage = [
+        { name: '테스트0', date: '2022-11-05', description: '테스트0입니다.' },
+        { name: '테스트1', date: '2022-11-06', description: '테스트1입니다.' },
+        { name: '테스트2', date: '2022-11-06', description: '테스트2입니다.' },
+        {
+          name: '테스트3',
+          date: '2022-11-07',
+          description:
+            '볼셰비키 지도자인 블라디미르 레닌을 중심으로 10월 혁명이 일어났습니다.',
+        },
+        { name: '테스트4', date: '2022-11-07', description: '테스트4입니다.' },
+        {
+          name: '스터디날',
+          date: '2022-11-08',
+          description: '오늘은 스터디날입니다. 제대로 작동해야할텐데..',
+        },
+        {
+          name: '다음날',
+          date: '2022-11-09',
+          description: '스터디 다음날 입니다.',
+        },
+        { name: '테스트7', date: '2022-11-09', description: '테스트입니다.' },
+      ];
+
+      localStorage.setItem('storage', JSON.stringify(storage));
+
+      let localStorageObject = JSON.parse(localStorage.getItem('storage'));
+
+      for (const key of localStorageObject) {
+        if (key.date == dateString) {
+          document.getElementById('todaytitle').innerHTML = key.name;
+          document.getElementById('todaydate').innerHTML = key.date;
+          document.getElementById('todaydescription').innerHTML =
+            key.description;
+          document.getElementById('date1').innerHTML = dateString;
+          break;
+        }
+      }
+
+      document
+        .getElementById('previousdate')
+        .addEventListener('click', function () {
+          dateString =
+            dateString.slice(0, -1) + (Number(dateString.slice(-1)) - 1);
+          for (const key of localStorageObject) {
+            if (key.date == dateString) {
+              document.getElementById('todaytitle').innerHTML = key.name;
+              document.getElementById('todaydate').innerHTML = key.date;
+              document.getElementById('todaydescription').innerHTML =
+                key.description;
+              document.getElementById('date1').innerHTML = dateString;
+              break;
+            }
+          }
+        });
+      document
+        .getElementById('nextdate')
+        .addEventListener('click', function () {
+          dateString =
+            dateString.slice(0, -1) + (Number(dateString.slice(-1)) + 1);
+          for (const key of localStorageObject) {
+            if (key.date == dateString) {
+              document.getElementById('todaytitle').innerHTML = key.name;
+              document.getElementById('todaydate').innerHTML = key.date;
+              document.getElementById('todaydescription').innerHTML =
+                key.description;
+              document.getElementById('date1').innerHTML = dateString;
+              break;
+            }
+          }
+        });
+    </script>
+  </body>
+</html>
