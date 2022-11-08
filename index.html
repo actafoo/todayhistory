@@ -28,12 +28,11 @@
           >오늘의 역사</a
         >
       </div>
-      <div class="flex-none">
+      <div class="flex-initial;">
         <ul class="menu menu-horizontal p-0">
-          <li><a id="anotherdate">다른 날짜</a></li>
           <li tabindex="0">
             <a>
-              학습하기
+              등록하기
               <svg
                 class="fill-current"
                 xmlns="http://www.w3.org/2000/svg"
@@ -46,9 +45,9 @@
                 />
               </svg>
             </a>
-            <ul class="p-2 bg-base-100">
-              <li><a>글쓰기</a></li>
-              <li><a>추가 링크</a></li>
+            <ul class="p-2 bg-base-300">
+              <li class="hover:bg-pink-300"><a>역사 등록</a></li>
+              <li class="hover:bg-pink-300"><a>방명록 등록</a></li>
             </ul>
           </li>
           <li><a>회원가입</a></li>
@@ -101,7 +100,7 @@
           </div>
           <div class="btn-group flex justify-center">
             <button class="btn" id="previousdate">«</button>
-            <button class="btn" id="date1">Page 22</button>
+            <input class="btn" type="date" value="2017-06-01" id="date1" />
             <button class="btn" id="nextdate">»</button>
           </div>
         </div>
@@ -121,9 +120,6 @@
       });
       document.getElementById('open').addEventListener('click', () => {
         document.getElementById('modal').style.display = 'block';
-      });
-      document.getElementById('anotherdate').addEventListener('click', () => {
-        alert('아직 구현되지 않은 기능입니다.');
       });
 
       let today = new Date();
@@ -154,11 +150,23 @@
           description: '오늘은 스터디날입니다. 제대로 작동해야할텐데..',
         },
         {
+          name: '스터디날',
+          date: '2022-11-08',
+          description: '오늘은 스터디날2입니다. 제대로 작동해야할텐데..',
+        },
+        {
           name: '다음날',
           date: '2022-11-09',
           description: '스터디 다음날 입니다.',
         },
         { name: '테스트7', date: '2022-11-09', description: '테스트입니다.' },
+        { name: '목요일', date: '2022-11-10', description: '테스트입니다.' },
+        {
+          name: '빼빼로데이',
+          date: '2022-11-11',
+          description: '빼빼로데이입니다.',
+        },
+        { name: '토요일', date: '2022-11-12', description: '와! 주말이다.' },
       ];
 
       localStorage.setItem('storage', JSON.stringify(storage));
@@ -171,7 +179,7 @@
           document.getElementById('todaydate').innerHTML = key.date;
           document.getElementById('todaydescription').innerHTML =
             key.description;
-          document.getElementById('date1').innerHTML = dateString;
+          document.getElementById('date1').value = dateString;
           break;
         }
       }
@@ -179,15 +187,23 @@
       document
         .getElementById('previousdate')
         .addEventListener('click', function () {
-          dateString =
-            dateString.slice(0, -1) + (Number(dateString.slice(-1)) - 1);
+          if (dateString.slice(-1) == 0) {
+            dateString =
+              dateString.slice(0, -2) +
+              (Number(dateString.slice(-2, -1)) - 1) +
+              '9';
+          } else {
+            dateString =
+              dateString.slice(0, -1) + (Number(dateString.slice(-1)) - 1);
+          }
+          console.log(dateString);
           for (const key of localStorageObject) {
             if (key.date == dateString) {
               document.getElementById('todaytitle').innerHTML = key.name;
               document.getElementById('todaydate').innerHTML = key.date;
               document.getElementById('todaydescription').innerHTML =
                 key.description;
-              document.getElementById('date1').innerHTML = dateString;
+              document.getElementById('date1').value = dateString;
               break;
             }
           }
@@ -195,15 +211,22 @@
       document
         .getElementById('nextdate')
         .addEventListener('click', function () {
-          dateString =
-            dateString.slice(0, -1) + (Number(dateString.slice(-1)) + 1);
+          if (dateString.slice(-1) == 9) {
+            dateString =
+              dateString.slice(0, -2) +
+              (Number(dateString.slice(-2, -1)) + 1) +
+              '0';
+          } else {
+            dateString =
+              dateString.slice(0, -1) + (Number(dateString.slice(-1)) + 1);
+          }
           for (const key of localStorageObject) {
             if (key.date == dateString) {
               document.getElementById('todaytitle').innerHTML = key.name;
               document.getElementById('todaydate').innerHTML = key.date;
               document.getElementById('todaydescription').innerHTML =
                 key.description;
-              document.getElementById('date1').innerHTML = dateString;
+              document.getElementById('date1').value = dateString;
               break;
             }
           }
